@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import by.a_makarevich.rsschooltask5catsretrofit.Data.CatsData
+import by.a_makarevich.rsschooltask5catsretrofit.Data.Cat
 import by.a_makarevich.rsschooltask5catsretrofit.R
 import coil.api.load
 
 class CatAdapter(private val onCatClickListener: OnCatClickListener) : RecyclerView.Adapter<CatViewHolder>() {
 
-    private val items = mutableListOf<CatsData>()
+    private val items = mutableListOf<Cat>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_item, null)
@@ -30,7 +30,7 @@ class CatAdapter(private val onCatClickListener: OnCatClickListener) : RecyclerV
         }
     }
 
-    fun addItems(newItems: List<CatsData>) {
+    fun addItems(newItems: List<Cat>) {
         items.addAll(newItems)
         notifyDataSetChanged()
     }

@@ -3,38 +3,28 @@ package by.a_makarevich.rsschooltask5catsretrofit
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.a_makarevich.rsschooltask5catsretrofit.Adapter.CatAdapter
 import by.a_makarevich.rsschooltask5catsretrofit.Adapter.OnCatClickListener
-import by.a_makarevich.rsschooltask5catsretrofit.Data.CatsData
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
 class MainActivity : AppCompatActivity(), OnCatClickListener {
 
     private val itemAdapter = CatAdapter(this)
 
+    private val scope = CoroutineScope(Dispatchers.Main)
+
     private fun loadCatsAndUpdateList() {
 
+        scope.launch {
 
-        GlobalScope.launch(Dispatchers.Main) {
-        // Execute web request through coroutine call adapter & retrofit
-        val webResponse = WebAccess.catsApi.getListOfCats().await()
-
-            if (webResponse.isSuccessful){
-                val catsList: List<CatsData>? = webResponse.body()
-                Log.d("LOG_TAG", catsList.toString())
-                itemAdapter.addItems(catsList ?: listOf())
-                itemAdapter.notifyDataSetChanged()
-            } else {
-                Log.d("LOG_TAG", "Error ${webResponse.code()}")
-                Toast.makeText(this@MainActivity, "Error ${webResponse.code()}", Toast.LENGTH_SHORT).show()
+            WebAccess.getFlowListOfCats().collect {
+                itemAdapter.addItems(it)
             }
-    }
+        }
     }
 
 
@@ -47,7 +37,7 @@ class MainActivity : AppCompatActivity(), OnCatClickListener {
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
         loadCatsAndUpdateList()
-        
+
 
     }
 
