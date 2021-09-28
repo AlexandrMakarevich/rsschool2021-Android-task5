@@ -1,11 +1,11 @@
-package by.a_makarevich.rsschooltask5catsretrofit.Adapter
+package by.a_makarevich.rsschooltask5catsretrofit.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import by.a_makarevich.rsschooltask5catsretrofit.Data.Cat
+import by.a_makarevich.rsschooltask5catsretrofit.data.Cat
 import by.a_makarevich.rsschooltask5catsretrofit.R
 import coil.api.load
 

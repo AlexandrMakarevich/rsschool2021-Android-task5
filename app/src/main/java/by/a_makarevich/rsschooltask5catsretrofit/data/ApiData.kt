@@ -1,4 +1,4 @@
-package by.a_makarevich.rsschooltask5catsretrofit.Data
+package by.a_makarevich.rsschooltask5catsretrofit.data
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
