@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import coil.api.load
 import kotlinx.android.synthetic.main.layout_view_image.*
 
@@ -36,7 +37,7 @@ class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
               R.id.menu_save_image -> {
                   getPermissionAndSaveImage()
               }
@@ -45,9 +46,11 @@ class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
     }
 
     private fun saveImageToGallery(){
-        image.buildDrawingCache()
-        val b: Bitmap = image.getDrawingCache()
-        val s = MediaStore.Images.Media.insertImage(this.contentResolver, b, "myImage", "")
+        val bitmapDrawable = image.drawable
+        val bitMap: Bitmap = bitmapDrawable.toBitmap()
+       /* image.buildDrawingCache()
+        val b: Bitmap = image.getDrawingCache()*/
+        val s = MediaStore.Images.Media.insertImage(this.contentResolver, bitMap, "myImage", "")
         Toast.makeText(this, "The Image Was Saved", Toast.LENGTH_SHORT).show()
     }
 
