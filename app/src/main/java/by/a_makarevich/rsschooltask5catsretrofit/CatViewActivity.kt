@@ -16,17 +16,15 @@ import androidx.core.graphics.drawable.toBitmap
 import coil.api.load
 import kotlinx.android.synthetic.main.layout_view_image.*
 
-
 class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
 
- private val REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
+    private val REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
         if (intent.hasExtra("IMAGE_URL")) {
             image.load(intent.getStringExtra("IMAGE_URL"))
-
         }
     }
 
@@ -38,23 +36,23 @@ class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-              R.id.menu_save_image -> {
-                  getPermissionAndSaveImage()
-              }
+            R.id.menu_save_image -> {
+                getPermissionAndSaveImage()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun saveImageToGallery(){
+    private fun saveImageToGallery() {
         val bitmapDrawable = image.drawable
         val bitMap: Bitmap = bitmapDrawable.toBitmap()
-       /* image.buildDrawingCache()
-        val b: Bitmap = image.getDrawingCache()*/
+        /* image.buildDrawingCache()
+         val b: Bitmap = image.getDrawingCache()*/
         val s = MediaStore.Images.Media.insertImage(this.contentResolver, bitMap, "myImage", "")
         Toast.makeText(this, "The Image Was Saved", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getPermissionAndSaveImage(){
+    private fun getPermissionAndSaveImage() {
         val permissionStatus =
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
@@ -76,8 +74,8 @@ class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_CODE_PERMISSION_WRITE_EXTERNAL_STORAGE -> {
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED
                 ) {
                     // permission granted
                     saveImageToGallery()
@@ -89,5 +87,4 @@ class CatViewActivity : AppCompatActivity(R.layout.layout_view_image) {
             }
         }
     }
-
 }

@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), OnCatClickListener {
     lateinit var remoteViewModel: RemoteViewModel
     lateinit var adapter: RemoteCatImageAdapter
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity(), OnCatClickListener {
         initMembers()
         setUpViews()
         fetchCatImages()
-
     }
 
     private fun setUpViews() {
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity(), OnCatClickListener {
             }
         }
     }
-
 
     override fun onItemClick(imageUrl: String) {
         Log.d("LOG_TAG", "ITEM_CLICKED $imageUrl")

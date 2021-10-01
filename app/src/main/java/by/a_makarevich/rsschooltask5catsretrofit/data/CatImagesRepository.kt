@@ -12,8 +12,9 @@ import kotlinx.coroutines.flow.Flow
 class CatImagesRepository(
     private val catApiService: TheCatApi = WebAccess.catService
 ) {
-
-    fun letCatImagesFlow(pagingConfig: PagingConfig = getDefaultPageConfig()): Flow<PagingData<Cat>> {
+    fun letCatImagesFlow(
+        pagingConfig: PagingConfig = getDefaultPageConfig()
+    ): Flow<PagingData<Cat>> {
         return Pager(
             config = pagingConfig,
             pagingSourceFactory = { CatImagePagingSource(catApiService) }
@@ -31,4 +32,3 @@ class CatImagesRepository(
         fun getInstance() = CatImagesRepository()
     }
 }
-

@@ -7,12 +7,13 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 object WebAccess {
+
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(MoshiConverterFactory.create())
         .baseUrl("https://api.thecatapi.com/v1/")
         .build()
 
-     val catService: TheCatApi = retrofit.create(TheCatApi::class.java)
+    val catService: TheCatApi = retrofit.create(TheCatApi::class.java)
 }
 
 interface TheCatApi {

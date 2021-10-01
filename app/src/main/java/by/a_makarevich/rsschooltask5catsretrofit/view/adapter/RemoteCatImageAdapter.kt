@@ -11,7 +11,8 @@ import by.a_makarevich.rsschooltask5catsretrofit.R
 import by.a_makarevich.rsschooltask5catsretrofit.model.Cat
 import coil.api.load
 
-class RemoteCatImageAdapter(private val onCatClickListener: OnCatClickListener) : PagingDataAdapter<Cat, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
+class RemoteCatImageAdapter(private val onCatClickListener: OnCatClickListener) :
+    PagingDataAdapter<Cat, RecyclerView.ViewHolder>(REPO_COMPARATOR) {
 
     companion object {
         private val REPO_COMPARATOR = object : DiffUtil.ItemCallback<Cat>() {
@@ -37,28 +38,25 @@ class RemoteCatImageAdapter(private val onCatClickListener: OnCatClickListener) 
     }
 }
 
-
 class CatImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     companion object {
-        fun getInstance(parent: ViewGroup) : CatImageViewHolder {
+        fun getInstance(parent: ViewGroup): CatImageViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val view = inflater.inflate(R.layout.layout_item, parent, false)
             return CatImageViewHolder(view)
         }
-
     }
 
     private val catImage = view.findViewById<ImageView>(R.id.catImageView)
 
-
-    fun bind (item: Cat?) {
-        catImage.load(item?.imageUrl){
+    fun bind(item: Cat?) {
+        catImage.load(item?.imageUrl) {
             placeholder(R.drawable.ic_launcher_foreground)
         }
     }
-
 }
+
 interface OnCatClickListener {
     fun onItemClick(imageUrl: String)
 }
