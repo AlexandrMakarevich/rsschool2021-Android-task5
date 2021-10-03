@@ -3,53 +3,48 @@ package by.a_makarevich.rsschooltask5catsretrofit
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import by.a_makarevich.rsschooltask5catsretrofit.adapter.CatAdapter
-import by.a_makarevich.rsschooltask5catsretrofit.adapter.OnCatClickListener
-import by.a_makarevich.rsschooltask5catsretrofit.data.Cat
+import androidx.lifecycle.lifecycleScope
+import by.a_makarevich.rsschooltask5catsretrofit.databinding.ActivityMainBinding
+import by.a_makarevich.rsschooltask5catsretrofit.pagination.OnCatClickListener
+import by.a_makarevich.rsschooltask5catsretrofit.pagination.RemoteCatImageAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), OnCatClickListener {
 
-    private val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
 
-    private val mAdapter = CatAdapter(this)
-
+    lateinit var remoteViewModel: RemoteViewModel
+    lateinit var adapter: RemoteCatImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setObservers()
-        viewModel.getCats()
-
+        initMembers()
+        setUpViews()
+        fetchCatImages()
     }
 
-    private fun setObservers() {
-        viewModel.catList.observe(this, Observer {
-            updateAdapter(it)
-        })
-
-        viewModel.loadingState.observe(this, Observer {
-            setLoading(it)
-        })
+    private fun setUpViews() {
+        recyclerView.adapter = adapter
     }
 
-    private fun updateAdapter(cats: List<Cat>) {
-        recyclerView.apply {
-            adapter = mAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            mAdapter.addItems(cats)
+    private fun initMembers() {
+        remoteViewModel = defaultViewModelProviderFactory.create(RemoteViewModel::class.java)
+        adapter = RemoteCatImageAdapter(this)
+    }
+
+    private fun fetchCatImages() {
+        lifecycleScope.launch {
+            remoteViewModel.fetchCatImages().distinctUntilChanged().collectLatest {
+                adapter.submitData(it)
+            }
         }
-    }
-
-    private fun setLoading(loading: Boolean) {
-        progressBar_loader?.isVisible = loading
     }
 
     override fun onItemClick(imageUrl: String) {
